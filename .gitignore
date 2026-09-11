@@ -1,0 +1,14 @@
+*.o
+src/tea_iroot
+src/decrypt_iroot
+src/encrypt_iroot
+__pycache__/
+*.pyc
+*.bin
+!**/boot.bin
+*.zip
+*.7z
+SA5212M4_BMC_4.35.0_Standard_20191025
+.DS_Store
+rootfs/
+*.scc

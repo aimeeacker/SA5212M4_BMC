@@ -1,0 +1,41 @@
+name: Build & Repack BMC Firmware
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build & Repack Firmware (Node 24)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install Build Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            gcc-arm-linux-gnueabi \
+            p7zip-full \
+            fakeroot \
+            zlib1g-dev
+
+      - name: Execute Node.js 24 Repack Pipeline
+        run: node src/repack.mjs
+
+      - name: Upload Firmware & UEFI Flash Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: SA5212M4_BMC_4.35.0_Standard_Custom
+          path: |
+            SA5212M4_BMC_4.35.0_Standard_Custom.bin
+            uefi_flash_pack.zip
+          retention-days: 90
+          if-no-files-found: error
